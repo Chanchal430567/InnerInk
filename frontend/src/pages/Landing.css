@@ -1,0 +1,23 @@
+.landing-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.landing-title {
+  font-size: 4rem;
+}
+
+.landing-tagline {
+  font-size: 1.2rem;
+}
+
+.start-btn {
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}

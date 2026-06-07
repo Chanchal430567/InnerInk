@@ -1,0 +1,46 @@
+.diary-container {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  padding-top: 50px;
+
+  gap: 20px;
+}
+
+.diary-container input {
+  width: 500px;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ccc;
+}
+
+.diary-container textarea {
+  width: 500px;
+
+  height: 300px;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ccc;
+
+  resize: none;
+}
+
+.diary-container button {
+  padding: 12px 20px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
