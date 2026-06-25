@@ -1,14 +1,84 @@
+import CalendarView from "../components/CalendarView";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function Home() {
 
-  const navigate = useNavigate();
+   const navigate = useNavigate();
+
+  useEffect(() => {
+
+  const token =
+    localStorage.getItem("token");
+
+  if (!token) {
+
+    navigate("/login");
+
+  }
+
+}, []);
+const [entries, setEntries] = useState([]);
+
+useEffect(() => {
+
+  fetchEntries();
+
+}, []);
+
+const fetchEntries = async () => {
+
+  try {
+
+   const res = await axios.get(
+  "http://localhost:5000/api/diary",
+  {
+    params: {
+      userId:
+        localStorage.getItem("userId"),
+    },
+  }
+);
+
+    setEntries(res.data);
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};     
+
+ const handleLogout = () => {
+
+  localStorage.removeItem("token");
+localStorage.removeItem("user");
+localStorage.removeItem("userId");
+
+  navigate("/login");
+
+};
 
   return (
     <div className="home-container">
 
       <h1>InnerInk ✨</h1>
+
+      <button
+  onClick={handleLogout}
+>
+  Logout
+</button>
+      <div className="section">
+
+  <h2>Your Journey 📖</h2>
+
+  <p>Total Entries: {entries.length}</p>
+
+</div>
 
       <p className="today-date">
         {new Date().toDateString()}
@@ -25,16 +95,7 @@ function Home() {
 
         <h2>📅 Calendar</h2>
 
-        <div className="calendar">
-
-          <button onClick={() => navigate("/diary")}>1</button>
-          <button onClick={() => navigate("/diary")}>2</button>
-          <button onClick={() => navigate("/diary")}>3</button>
-          <button onClick={() => navigate("/diary")}>4</button>
-          <button onClick={() => navigate("/diary")}>5</button>
-          <button onClick={() => navigate("/diary")}>6</button>
-
-        </div>
+        <CalendarView entries={entries} />
 
       </div>
 

@@ -1,75 +1,125 @@
 import "./Diary.css";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Diary() {
+
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [mood, setMood] = useState("😌");
   const [title, setTitle] = useState("");
-const [content, setContent] = useState("");
-const [entries, setEntries] = useState(() => {
-
-  const savedEntries =
-    localStorage.getItem("diaryEntries");
-
-  return savedEntries
-    ? JSON.parse(savedEntries)
-    : [];
-
-});
+  const [category, setCategory] = useState("Diary");
+  const [content, setContent] = useState("");
+ const [entries, setEntries] = useState([]);
+ 
 const [editIndex, setEditIndex] = useState(null);
-
 
 useEffect(() => {
 
-  localStorage.setItem(
-    "diaryEntries",
-    JSON.stringify(entries)
-  );
+  const token =
+    localStorage.getItem("token");
 
-}, [entries]);
+  if (!token) {
 
-const saveEntry = () => {
-
-  if (!title.trim() || !content.trim()) {
-  alert("Please enter both title and content");
-  return;
-}
-
-  if (editIndex !== null) {
-
-    const updatedEntries = [...entries];
-
-    updatedEntries[editIndex] = {
-  ...updatedEntries[editIndex],
-  title,
-  content
-};
-    setEntries(updatedEntries);
-
-    setEditIndex(null);
-
-  } else {
-
-    const newEntry = {
-  date: new Date().toLocaleDateString(),
-  title,
-  content
-};
-
-    setEntries([...entries, newEntry]);
+    navigate("/login");
 
   }
 
-  setTitle("");
-  setContent("");
+}, []);
+
+useEffect(() => {
+  fetchEntries();
+}, []);
+
+const fetchEntries = async () => {
+  try {
+    const res = await axios.get(
+  "http://localhost:5000/api/diary",
+  {
+    params: {
+      userId:
+        localStorage.getItem("userId"),
+    },
+  }
+);
+    console.log("Fetched:", res.data);
+
+    setEntries(res.data);
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const saveEntry = async () => {
+
+  if (!title.trim() || !content.trim()) {
+    alert("Please enter both title and content");
+    return;
+  }
+
+  try {
+
+    if (editIndex !== null) {
+
+      await axios.put(
+        `http://localhost:5000/api/diary/${entries[editIndex]._id}`,
+        {
+          title,
+          content,
+          mood,
+          category
+        }
+      );
+
+      setEditIndex(null);
+
+    } else {
+
+     await axios.post(
+  "http://localhost:5000/api/diary",
+  {
+    title,
+    content,
+    mood,
+    category,
+    userId: localStorage.getItem("userId")
+  }
+);
+
+    }
+
+    fetchEntries();
+
+    setTitle("");
+    setContent("");
+    setMood("😌");
+    setCategory("Diary");
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
 
 };
 
-const deleteEntry = (indexToDelete) => {
+const deleteEntry = async (id) => {
 
-  const updatedEntries = entries.filter(
-    (_, index) => index !== indexToDelete
-  );
+  try {
 
-  setEntries(updatedEntries);
+    await axios.delete(
+      `http://localhost:5000/api/diary/${id}`
+    );
+
+    fetchEntries();
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
 
 };
 
@@ -79,9 +129,20 @@ const editEntry = (indexToEdit) => {
 
   setContent(entries[indexToEdit].content);
 
+  setMood(entries[indexToEdit].mood || "😌");
+
+  setCategory(
+  entries[indexToEdit].category || "Diary"
+);
+
   setEditIndex(indexToEdit);
 
 };
+
+const filteredEntries = entries.filter((entry) =>
+  entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  entry.content.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   return (
     <div className="diary-container">
@@ -101,21 +162,60 @@ const editEntry = (indexToEdit) => {
   onChange={(e) => setContent(e.target.value)}
 ></textarea>
 
+<select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+>
+  <option value="Diary">Diary</option>
+  <option value="Gratitude">Gratitude</option>
+  <option value="Unsent Letter">Unsent Letter</option>
+  <option value="Wish">Wish</option>
+  <option value="Blog">Blog</option>
+</select>
+
+<select
+  value={mood}
+  onChange={(e) => setMood(e.target.value)}
+>
+  <option value="😀">😀 Happy</option>
+  <option value="😌">😌 Calm</option>
+  <option value="😔">😔 Sad</option>
+  <option value="😡">😡 Angry</option>
+</select>
+
     <button onClick={saveEntry}>
   {editIndex !== null ? "Update Entry" : "Save Entry"}
 </button>
 
 <div>
 
-  <h2>Saved Entries</h2>
+  <input
+  type="text"
+  placeholder="Search entries..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+/>
 
-  {entries.map((entry, index) => (
+  <h2>
+  Saved Entries ({entries.length})
+</h2>
+
+{filteredEntries.length === 0 && (
+  <p>
+    No diary entries found. Start writing your story ✨
+  </p>
+)}
+
+  {filteredEntries.map((entry, index) => (
 
   <div className="saved-entry" key={index}>
+<p>{entry.date}</p>
 
-    <p>{entry.date}</p>
+<p>
+  {entry.mood} | {entry.category}
+</p>
 
-    <h3>{entry.title}</h3>
+<h3>{entry.title}</h3>
 
     <p>{entry.content}</p>
 
@@ -126,7 +226,7 @@ const editEntry = (indexToEdit) => {
 </button>
 
       <button
-  onClick={() => deleteEntry(index)}
+  onClick={() => deleteEntry(entry._id)}
 >
   Delete
 </button>
