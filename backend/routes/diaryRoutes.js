@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Diary = require("../models/Diary");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const {
    getEntries,
@@ -10,15 +11,14 @@ const {
 } = require("../controllers/diaryController");
 
 // Get  entries
-router.get("/", getEntries);
-
+router.get("/", authMiddleware, getEntries);
 // Create entry
-router.post("/", createEntry);
+router.post("/", authMiddleware, createEntry);
 
 // Update entry
-router.put("/:id", updateEntry);
+router.put("/:id", authMiddleware, updateEntry);
 
 // Delete entry
-router.delete("/:id", deleteEntry);
+router.delete("/:id", authMiddleware, deleteEntry);
 
 module.exports = router;

@@ -34,12 +34,13 @@ useEffect(() => {
 
 const fetchEntries = async () => {
   try {
-    const res = await axios.get(
+    const token = localStorage.getItem("token");
+
+const res = await axios.get(
   "http://localhost:5000/api/diary",
   {
-    params: {
-      userId:
-        localStorage.getItem("userId"),
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   }
 );
@@ -54,6 +55,8 @@ const fetchEntries = async () => {
 
 const saveEntry = async () => {
 
+  const token = localStorage.getItem("token");
+
   if (!title.trim() || !content.trim()) {
     alert("Please enter both title and content");
     return;
@@ -64,14 +67,19 @@ const saveEntry = async () => {
     if (editIndex !== null) {
 
       await axios.put(
-        `http://localhost:5000/api/diary/${entries[editIndex]._id}`,
-        {
-          title,
-          content,
-          mood,
-          category
-        }
-      );
+  `http://localhost:5000/api/diary/${entries[editIndex]._id}`,
+  {
+    title,
+    content,
+    mood,
+    category,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       setEditIndex(null);
 
@@ -84,7 +92,11 @@ const saveEntry = async () => {
     content,
     mood,
     category,
-    userId: localStorage.getItem("userId")
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }
 );
 
@@ -107,10 +119,17 @@ const saveEntry = async () => {
 
 const deleteEntry = async (id) => {
 
+  const token = localStorage.getItem("token");
+
   try {
 
     await axios.delete(
-      `http://localhost:5000/api/diary/${id}`
+      `http://localhost:5000/api/diary/${id}`,
+      {
+        headers: {
+   Authorization: `Bearer ${token}`,
+}
+      }
     );
 
     fetchEntries();
