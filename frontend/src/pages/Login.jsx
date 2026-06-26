@@ -70,14 +70,18 @@ navigate("/home");
   value={password}
   onChange={(e) => setPassword(e.target.value)}
 />
+
 <p
-  className="forgot-password"
-  onClick={() =>
-    alert("Coming Soon 🚀")
-  }
+  onClick={() => navigate("/forgot-password")}
+  style={{
+    cursor: "pointer",
+    color: "blue",
+    marginTop: "10px",
+  }}
 >
   Forgot Password?
 </p>
+
 
         <button onClick={handleLogin}>
   Login

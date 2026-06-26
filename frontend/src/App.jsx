@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import Diary from "./pages/Diary";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOTP from "./pages/VerifyOTP";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -21,6 +24,21 @@ function App() {
       <Home />
     </ProtectedRoute>
   }
+/>
+
+<Route
+  path="/reset-password"
+  element={<ResetPassword />}
+/>
+
+<Route
+  path="/verify-otp"
+  element={<VerifyOTP />}
+/>
+
+<Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
 />
 
 <Route
