@@ -9,6 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ResetPassword from "./pages/ResetPassword";
+import Profile from "./pages/Profile";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -24,6 +26,11 @@ function App() {
       <Home />
     </ProtectedRoute>
   }
+/>
+
+<Route
+  path="/profile"
+  element={<Profile />}
 />
 
 <Route
@@ -51,6 +58,26 @@ function App() {
 />
         
       </Routes>
+
+      <ToastContainer
+  position="top-right"
+  autoClose={2500}
+  hideProgressBar={true}
+  newestOnTop
+  closeOnClick
+  pauseOnHover
+  draggable
+  theme="light"
+  toastStyle={{
+    background: "#FFFFFF",
+    color: "#3A3A3A",
+    borderRadius: "14px",
+    borderLeft: "5px solid #5B8FB9",
+    boxShadow: "0 8px 25px rgba(0,0,0,.08)",
+    fontFamily: "Inter",
+  }}
+/>
+
     </BrowserRouter>
   );
 }

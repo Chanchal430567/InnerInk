@@ -3,8 +3,12 @@ import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Header from "../components/Header";
+
 
 function Home() {
+
+  const [user, setUser] = useState(null);
 
    const navigate = useNavigate();
 
@@ -19,7 +23,15 @@ function Home() {
 
   }
 
+  const storedUser = JSON.parse(
+  localStorage.getItem("user")
+);
+
+setUser(storedUser);
+
 }, []);
+
+
 const [entries, setEntries] = useState([]);
 
 useEffect(() => {
@@ -32,12 +44,13 @@ const fetchEntries = async () => {
 
   try {
 
-   const res = await axios.get(
+   const token = localStorage.getItem("token");
+
+const res = await axios.get(
   "http://localhost:5000/api/diary",
   {
-    params: {
-      userId:
-        localStorage.getItem("userId"),
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   }
 );
@@ -63,63 +76,95 @@ localStorage.removeItem("userId");
 };
 
   return (
+    <>
+<Header />
     <div className="home-container">
 
-      <h1>InnerInk ✨</h1>
+    <div className="hero-dashboard">
 
-      <button
-  onClick={handleLogout}
->
-  Logout
-</button>
-      <div className="section">
+    <div className="hero-left">
 
-  <h2>Your Journey 📖</h2>
+       <div className="hero-section">
 
-  <p>Total Entries: {entries.length}</p>
+  <p className="hero-label">
+    Welcome back 🌿
+  </p>
+
+  <h2 className="welcome-heading">
+
+    Good {new Date().getHours() < 12
+      ? "Morning"
+      : new Date().getHours() < 18
+      ? "Afternoon"
+      : "Evening"}, {user?.name}!
+
+  </h2>
+
+  <p className="welcome-text">
+
+    Every page you write today
+    becomes a memory tomorrow.
+
+  </p>
 
 </div>
 
-      <p className="today-date">
-        {new Date().toDateString()}
-      </p>
+    </div>
 
-      <button
-        className="entry-btn"
-        onClick={() => navigate("/diary")}
-      >
-        Write Today's Entry
-      </button>
+    <div className="hero-right">
 
-      <div className="section">
+       <div className="dashboard-grid">
 
-        <h2>📅 Calendar</h2>
+ 
+
+  <div
+    className="write-card"
+    onClick={() => navigate("/diary")}
+  >
+
+    <h3>Continue Writing →</h3>
+
+    <p>
+      Pick up where your thoughts left off.
+    </p>
+
+  </div>
+
+</div>
+
+    </div>
+
+</div>
+
+
+      <div className="calendar-card">
+
+        <h2>Your Journal Calendar</h2>
+
+<p className="calendar-subtitle">
+    Select a day to revisit your memories.
+</p>
 
         <CalendarView entries={entries} />
 
       </div>
 
-      <div className="section">
+     <div className="quote-card">
 
-        <h2>💭 Daily Quote</h2>
+    <p className="quote-icon">
+        ❝
+    </p>
 
-        <p>
-          Every page you write is proof that you kept going.
-        </p>
+    <p className="quote-text">
 
-      </div>
+        Every page you write
+        is proof that you kept going.
 
-      <div className="section">
+    </p>
 
-        <h2>🤖 InnerInk Companion</h2>
-
-        <p>
-          How are you feeling today?
-        </p>
-
-      </div>
-
+</div>
     </div>
+    </>
   );
 }
 

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/auth.css";
+import { toast } from "react-toastify";
+import heroLogo from "../assets/InnerInk.jpeg";
 
 function Register() {
 
@@ -23,13 +26,15 @@ function Register() {
         }
       );
 
-      alert("Registration Successful!");
+      toast.success("🎉 Account created successfully!");
 
-      navigate("/login");
+     setTimeout(() => {
+    navigate("/login");
+}, 1500);
 
     } catch (error) {
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Registration Failed"
       );
@@ -38,10 +43,20 @@ function Register() {
 
   };
 
-  return (
-    <div>
+ return (
 
-      <h1>Register</h1>
+<div className="auth-page">
+
+<div className="auth-card">
+
+      <div className="auth-brand">
+        <img src={heroLogo} alt="InnerInk logo" className="auth-graphic" />
+        <h1 className="auth-logo">InnerInk</h1>
+      </div>
+
+<p className="auth-subtitle">
+    Create your personal journaling space with warmth and intention.
+</p>
 
       <input
         type="text"
@@ -70,12 +85,33 @@ function Register() {
         }
       />
 
-      <button onClick={registerUser}>
-        Register
-      </button>
+      <button
+    className="auth-btn"
+    onClick={registerUser}
+>
+    Create Account
+</button>
+
+    <p className="register-text">
+
+Already have an account?
+
+</p>
+
+<p
+className="register-link"
+onClick={() => navigate("/login")}
+>
+
+Login →
+
+</p>
 
     </div>
-  );
+
+</div>
+
+);
 }
 
 export default Register;

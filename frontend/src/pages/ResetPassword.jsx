@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/auth.css";
+import { toast } from "react-toastify";
+import heroLogo from "../assets/InnerInk.jpeg";
 
 function ResetPassword() {
 
@@ -24,13 +27,16 @@ function ResetPassword() {
   }
 );
 
-      alert(res.data.message);
+      toast.success("🔐 Password reset successfully!");
+      setTimeout(() => {
+    navigate("/login");
+}, 1500);
 
-      navigate("/login");
+      
 
     } catch (error) {
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Password reset failed"
       );
@@ -41,9 +47,18 @@ function ResetPassword() {
 
   return (
 
-    <div>
+<div className="auth-page">
 
-      <h1>Reset Password</h1>
+<div className="auth-card">
+
+      <div className="auth-brand">
+        <img src={heroLogo} alt="InnerInk logo" className="auth-graphic" />
+        <h1 className="auth-logo">InnerInk</h1>
+      </div>
+
+<p className="auth-subtitle">
+    Create a fresh password for your private journal.
+</p>
 
       <input
         type="password"
@@ -54,13 +69,18 @@ function ResetPassword() {
         }
       />
 
-      <button onClick={resetPassword}>
-        Reset Password
-      </button>
+      <button
+className="auth-btn"
+onClick={resetPassword}
+>
+  Reset Password
+</button>
 
     </div>
 
-  );
+</div>
+
+);
 
 }
 

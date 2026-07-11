@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/auth.css";
+import { toast } from "react-toastify";
+import heroLogo from "../assets/InnerInk.jpeg";
 
 function VerifyOTP() {
 
@@ -24,17 +27,19 @@ function VerifyOTP() {
         }
       );
 
-      alert(res.data.message);
+      toast.success("✅ OTP verified successfully!");
 
+      setTimeout(() => {
       navigate("/reset-password", {
   state: {
     resetToken: res.data.resetToken,
   },
 });
+}, 1500);
 
     } catch (error) {
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "OTP verification failed"
       );
@@ -45,9 +50,18 @@ function VerifyOTP() {
 
   return (
 
-    <div>
+<div className="auth-page">
 
-      <h1>Verify OTP</h1>
+<div className="auth-card">
+
+      <div className="auth-brand">
+        <img src={heroLogo} alt="InnerInk logo" className="auth-graphic" />
+        <h1 className="auth-logo">InnerInk</h1>
+      </div>
+
+<p className="auth-subtitle">
+    Enter the one-time code sent to your inbox.
+</p>
 
       <input
         type="text"
@@ -56,13 +70,20 @@ function VerifyOTP() {
         onChange={(e) => setOtp(e.target.value)}
       />
 
-      <button onClick={verifyOTP}>
-        Verify OTP
-      </button>
+      <button
+className="auth-btn"
+onClick={verifyOTP}
+>
+
+Verify OTP
+
+</button>
 
     </div>
 
-  );
+</div>
+
+);
 
 }
 

@@ -1,23 +1,139 @@
+.landing-page {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(91, 143, 185, 0.22), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(244, 151, 142, 0.18), transparent 30%),
+    linear-gradient(135deg, #fffaf3 0%, #fcf6eb 45%, #f4eee4 100%);
+}
+
+.splash-screen,
 .landing-container {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  position: relative;
+  padding: 24px;
 }
 
+.splash-screen {
+  background:
+    radial-gradient(circle at top left, rgba(91, 143, 185, 0.2), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(233, 196, 106, 0.18), transparent 34%),
+    linear-gradient(135deg, #fffaf3 0%, #fef5e8 100%);
+}
+
+.landing-container {
+  gap: 18px;
+}
+
+.landing-glow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(91, 143, 185, 0.12);
+  filter: blur(30px);
+  z-index: 0;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.splash-mark {
+  width: 128px;
+  height: 128px;
+  display: grid;
+  place-items: center;
+  border-radius: 32px;
+  background: linear-gradient(135deg, #fff8ef 0%, #f7e5cf 100%);
+  box-shadow:
+    0 16px 34px rgba(77, 101, 121, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.7) inset,
+    0 0 40px rgba(91, 143, 185, 0.12);
+  margin-bottom: 18px;
+  padding: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.brand-logo,
+.landing-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.landing-logo {
+  width: 132px;
+  height: 132px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 8px 16px rgba(54, 78, 95, 0.16));
+}
+
+.splash-title,
 .landing-title {
-  font-size: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.12em;
+  font-size: clamp(2.7rem, 5vw, 4.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #2f3d4a;
+  margin: 0;
+  z-index: 1;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.65),
+    0 8px 18px rgba(47, 61, 74, 0.12),
+    0 0 24px rgba(91, 143, 185, 0.12);
 }
 
+.brand-word {
+  display: inline-block;
+}
+
+.splash-quote,
 .landing-tagline {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
+  color: #6f7a85;
+  max-width: 480px;
+  text-align: center;
+  line-height: 1.7;
+  z-index: 1;
+  font-weight: 500;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .start-btn {
-  padding: 12px 24px;
+  margin-top: 6px;
+  padding: 13px 22px;
   border: none;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f2a78b, #e98d7e);
+  color: white;
+  font-weight: 700;
+  box-shadow:
+    0 14px 28px rgba(233, 141, 126, 0.24),
+    0 0 18px rgba(242, 167, 139, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(244, 151, 142, 0.3);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
 }

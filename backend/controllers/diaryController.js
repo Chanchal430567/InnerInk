@@ -4,11 +4,15 @@ const getEntries = async (req, res) => {
 
   try {
 
+    console.log("Logged in user:", req.user);
+
     const entries = await Diary.find({
       userId: req.user.id,
     }).sort({ date: -1 });
 
     res.json(entries);
+
+    console.log("Entries:", entries);
 
   } catch (error) {
 

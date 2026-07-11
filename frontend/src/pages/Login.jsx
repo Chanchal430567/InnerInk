@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css";
+import "../styles/auth.css";
+import { toast } from "react-toastify";
+import heroLogo from "../assets/InnerInk.jpeg";
 
 function Login() {
 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
+const [showPassword, setShowPassword] = useState(false);
 
 const handleLogin = async () => {
 
@@ -30,7 +33,7 @@ localStorage.setItem(
   JSON.stringify(res.data.user)
 );
 
-alert(res.data.message);
+toast.success(res.data.message);
 
 localStorage.setItem(
   "userId",
@@ -41,7 +44,7 @@ navigate("/home");
 
   } catch (error) {
 
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Login failed"
     );
@@ -50,12 +53,14 @@ navigate("/home");
 };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-brand">
+          <img src={heroLogo} alt="InnerInk logo" className="auth-graphic" />
+          <h1 className="auth-logo">InnerInk</h1>
+        </div>
 
-        <h1>InnerInk</h1>
-
-        <h2>Welcome Back</h2>
+        <h2 className="auth-subtitle">Your thoughts deserve a safe place to unfold.</h2>
 
        <input
   type="email"
@@ -64,39 +69,54 @@ navigate("/home");
   onChange={(e) => setEmail(e.target.value)}
 />
 
-        <input
-  type="password"
-  placeholder="Enter your password"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-/>
+       <div className="password-field">
 
+    <input
+        type={showPassword ? "text" : "password"}
+        value={password}
+         placeholder="Enter your password"
+        onChange={(e) => setPassword(e.target.value)}
+    />
+
+    <span
+        className="toggle-password"
+        onClick={() =>
+            setShowPassword(!showPassword)
+        }
+    >
+        {showPassword ? "🙈" : "👁"}
+    </span>
+
+</div>
 <p
+  className="forgot-link"
   onClick={() => navigate("/forgot-password")}
-  style={{
-    cursor: "pointer",
-    color: "blue",
-    marginTop: "10px",
-  }}
 >
   Forgot Password?
 </p>
 
 
-        <button onClick={handleLogin}>
-  Login
+        <button
+    className="auth-btn"
+    onClick={handleLogin}
+>
+    Login
 </button>
 
-<p className="register-link">
-  Don't have an account?
+<div className="divider">
+    <span>or</span>
+</div>
+
+<p className="register-text">
+    New to InnerInk?
 </p>
 
-<button
-  className="register-btn"
-  onClick={() => navigate("/register")}
+<p
+    className="register-link"
+    onClick={() => navigate("/register")}
 >
-  Create Account
-</button>
+    Create your account →
+</p>
 
       </div>
     </div>

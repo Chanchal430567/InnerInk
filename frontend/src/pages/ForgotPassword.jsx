@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/auth.css";
+import { toast } from "react-toastify";
+import heroLogo from "../assets/InnerInk.jpeg";
 
 function ForgotPassword() {
 
@@ -19,17 +22,19 @@ function ForgotPassword() {
         }
       );
 
-      alert(res.data.message);
+      toast.success("📧 OTP sent successfully!");
 
+      setTimeout(() => {
       navigate("/verify-otp", {
         state: {
           email,
         },
       });
+      }, 1500);
 
     } catch (error) {
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Something went wrong"
       );
@@ -40,9 +45,18 @@ function ForgotPassword() {
 
   return (
 
-    <div>
+<div className="auth-page">
 
-      <h1>Forgot Password</h1>
+<div className="auth-card">
+
+     <div className="auth-brand">
+      <img src={heroLogo} alt="InnerInk logo" className="auth-graphic" />
+      <h1 className="auth-logo">InnerInk</h1>
+    </div>
+
+<p className="auth-subtitle">
+    Enter your registered email to receive a verification code.
+</p>
 
       <input
         type="email"
@@ -53,13 +67,35 @@ function ForgotPassword() {
         }
       />
 
-      <button onClick={sendOTP}>
-        Send OTP
-      </button>
+      <button
+className="auth-btn"
+onClick={sendOTP}
+>
+
+Send OTP
+
+</button>
+
+<p className="register-text">
+
+Remember your password?
+
+</p>
+
+<p
+className="register-link"
+onClick={() => navigate("/login")}
+>
+
+Login →
+
+</p>
 
     </div>
 
-  );
+</div>
+
+);
 
 }
 

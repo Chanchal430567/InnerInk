@@ -1,5 +1,89 @@
-.entry-date {
-  background-color: lightgreen !important;
-
+.entry-date::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: #5b8fb9;
   border-radius: 50%;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.react-calendar {
+  width: 100% !important;
+  max-width: none;
+  margin: auto;
+  background: transparent;
+  border: none !important;
+  border-radius: 24px;
+  padding: 16px 4px 0;
+}
+
+.react-calendar__navigation {
+  margin-bottom: 16px;
+}
+
+.react-calendar__navigation button {
+  border: none;
+  background: linear-gradient(135deg, #f7f2ea, #f1e8dc);
+  color: #274b6d;
+  border-radius: 12px;
+  font-size: 2.1rem;
+  min-width: 48px;
+  min-height: 44px;
+  transition: 0.25s ease;
+}
+
+.react-calendar__navigation button:hover {
+  background: #5b8fb9;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.react-calendar__month-view__weekdays {
+  font-size: 15.98rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 8px 0;
+}
+
+.react-calendar__tile {
+  height: 102px;
+  font-size: 2.08rem;
+  font-weight: 600;
+  border-radius: 14px;
+  color: #223241;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.react-calendar__tile:hover {
+  background: linear-gradient(135deg, #eef5fb, #f8fbff) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+.react-calendar__navigation__label {
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: #1f2c3d;
+}
+
+.react-calendar__tile--active {
+  background: linear-gradient(135deg, #5b8fb9, #3f6f95) !important;
+  color: white !important;
+  box-shadow: 0 12px 24px rgba(91, 143, 185, 0.28);
+}
+
+.react-calendar__tile--now {
+  background: linear-gradient(135deg, #fff4c8, #ffe48f) !important;
+  color: #5a4b00 !important;
+  border: 1px solid rgba(233, 196, 106, 0.7);
 }
